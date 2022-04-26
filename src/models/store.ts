@@ -10,4 +10,8 @@ export class Store<T> {
     this.state = new BehaviorSubject(initialState);
     this.reducer = reducer
   }
+
+  subscribe(callback: (state: T) => void): Subscription {
+    return this.state.subscribe(callback);
+  }
 }

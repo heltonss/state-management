@@ -14,4 +14,10 @@ export class Store<T> {
   subscribe(callback: (state: T) => void): Subscription {
     return this.state.subscribe(callback);
   }
+
+  dispatch = (action: Action): void => {
+    const oldState = this.state.getValue();
+    const newState = this.reducer(oldState, action);
+    this.state.next(newState);
+  }
 }

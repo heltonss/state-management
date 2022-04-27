@@ -1,4 +1,4 @@
-import { Subscription } from 'rxjs';
+import { distinctUntilChanged, distinctUntilKeyChanged, Observable, pluck, Subscription } from 'rxjs';
 import { Action } from './../interfaces/action';
 import { BehaviorSubject } from 'rxjs';
 
@@ -19,5 +19,12 @@ export class Store<T> {
     const oldState = this.state.getValue();
     const newState = this.reducer(oldState, action);
     this.state.next(newState);
+  }
+
+  select<K extends keyof T>(key: K): Observable<T[K]> {
+    return this.state.pipe(
+      distinctUntilKeyChanged(key),
+      pluck(key)
+    );
   }
 }
